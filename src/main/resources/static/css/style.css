@@ -1,0 +1,55 @@
+.list-group-answer {
+    max-height: 456px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.list-group-answer-unique {
+    max-height: 400px;
+}
+
+.dropdown-menu {
+    width: 300px;
+    padding: 15px 15px 0;
+}
+
+.ui-timepicker-div .ui-widget-header {
+    margin-bottom: 8px;
+}
+
+.ui-timepicker-div dl {
+    text-align: left;
+}
+
+.ui-timepicker-div dl dt {
+    height: 25px;
+    margin-bottom: -25px;
+}
+
+.ui-timepicker-div dl dd {
+    margin: 0 10px 10px 65px;
+}
+
+.ui-timepicker-div td {
+    font-size: 90%;
+}
+
+.ui-tpicker-grid-label {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ui_tpicker_hour_label, .ui_tpicker_minute_label, .ui_tpicker_second_label,
+.ui_tpicker_millisec_label, .ui_tpicker_time_label {
+    padding-left: 20px
+}
+
+.rank_label {
+    float: right;
+    font-size: 12px;
+    margin-right: 8px;
+}
