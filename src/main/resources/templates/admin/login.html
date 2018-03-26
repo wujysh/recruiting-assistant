@@ -21,13 +21,16 @@
 
 <body class="text-center">
 <form class="form-signin" th:action="@{/admin/login}" method="post">
-    <span style="color: rgb(86, 61, 124); font-size: 72px;" class="mb-4 oi oi-key" title="icon name" aria-hidden="true"></span>
+    <span style="color: rgb(86, 61, 124); font-size: 100px;" class="mb-4 oi oi-lock-locked" title="Please sign in" aria-hidden="true"></span>
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
     <div th:if="${param.error}" class="alert alert-danger" role="alert">
         Invalid username and password.
     </div>
-    <div th:if="${param.logout}" class="alert alert-success" role="alert">
+    <div th:if="${param.logout}" class="alert alert-success alert-dismissible fade show" role="alert">
         You have been signed out.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
     <label for="inputUsername" class="sr-only">Username</label>
     <input type="text" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
@@ -41,5 +44,13 @@
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     <p class="mt-5 mb-3 text-muted">&copy; 2018</p>
 </form>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script>window.jQuery || document.write('<script th:src="@{/js/jquery.min.js}"><\/script>')</script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+
 </body>
 </html>

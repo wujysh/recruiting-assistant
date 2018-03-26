@@ -2,95 +2,133 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" th:href="@{/favicon.ico}">
 
-    <title>Administration - Smart Recruiting Assistant</title>
+    <title>Dashboard - Smart Recruiting Assistant</title>
 
     <!-- Bootstrap core CSS -->
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/css/bootstrap-switch.css}" rel="stylesheet">
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link th:href="@{/css/ie10-viewport-bug-workaround.css}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link th:href="@{/css/offcanvas.css}" rel="stylesheet">
-    <link th:href="@{/css/style.css}" rel="stylesheet">
-    <link th:href="@{/css/jquery-ui.css}" rel="stylesheet">
-    <link th:href="@{/css/jquery-ui-timepicker-addon.css}" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script th:src="@{/js/html5shiv.min.js}"></script>
-    <script th:src="@{/js/respond.min.js}"></script>
-    <![endif]-->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
 </head>
 
 <body>
-<nav class="navbar navbar-fixed-top navbar-inverse">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" th:href="@{/}">Smart Recruiting Assistant</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li><a th:href="@{/}">Home</a></li>
-                <li class="active"><a th:href="@{/admin}">Admin</a></li>
-                <li><a th:href="@{/about}">About</a></li>
-                <li><a th:href="@{/contact}">Contact</a></li>
-            </ul>
-        </div><!-- /.nav-collapse -->
-    </div><!-- /.container -->
-</nav><!-- /.navbar -->
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" th:href="@{/admin}">
+        <span th:text="${user.company != null} ? ${user.company.name} : 'Smart Recruiting Assistant'"></span>
+    </a>
 
-<div class="container">
+    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <form th:action="@{/logout}" method="post">
+                <input class="btn btn-dark" type="submit" value="Sign Out"/>
+            </form>
+        </li>
+    </ul>
+</nav>
 
-    <div class="row row-offcanvas row-offcanvas-right">
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">
+                            <i data-feather="home"></i>
+                            Dashboard <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i data-feather="layers"></i>
+                            Company
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i data-feather="user"></i>
+                            User
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i data-feather="tag"></i>
+                            Tag
+                        </a>
+                    </li>
+                </ul>
 
-        <div class="col-xs-12 col-sm-12">
-            <p class="pull-right visible-xs">
-                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
-            </p>
-            <div class="jumbotron">
-                <h2>Hello <span th:text="${user.username}"></span><span th:if="${user.company}"> from <span th:text="${user.company.name}"></span></span>!</h2>
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                    <span>Saved reports</span>
+                    <a class="d-flex align-items-center text-muted" href="#">
+                        <i data-feather="plus-circle"></i>
+                    </a>
+                </h6>
+                <ul class="nav flex-column mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i data-feather="file-text"></i>
+                            Current month
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i data-feather="file-text"></i>
+                            Previous month
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i data-feather="file-text"></i>
+                            Last quarter
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i data-feather="file-text"></i>
+                            Last year
+                        </a>
+                    </li>
+                </ul>
             </div>
-        </div><!--/row-->
+        </nav>
 
-        <hr>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                <h1 class="h2">Dashboard</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group mr-2">
+                        <button class="btn btn-sm btn-outline-secondary">Share</button>
+                        <button class="btn btn-sm btn-outline-secondary">Export</button>
+                    </div>
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                        <i data-feather="calendar"></i>
+                        This week
+                    </button>
+                </div>
+            </div>
 
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
-        </form>
+            <canvas class="my-4" id="myChart" width="900" height="380"></canvas>
+        </main>
+    </div>
+</div>
 
-        <footer>
-            <p>&copy; 2018</p>
-        </footer>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script>window.jQuery || document.write('<script th:src="@{/js/jquery.min.js}"><\/script>')</script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/feather.min.js}"></script>
+<script>
+    feather.replace()
+</script>
+<script th:src="@{/js/common.js}"></script>
 
-    </div><!--/.container-->
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script th:src="@{/js/jquery.min.js}"></script>
-    <script>window.jQuery || document.write('<script th:src="@{/js/jquery.min.js}"><\/script>')</script>
-    <script th:src="@{/js/jquery-ui.js}"></script>
-    <script th:src="@{/js/jquery-ui-timepicker-addon.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
-    <script th:src="@{/js/bootstrap-switch.js}"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script th:src="@{/js/ie10-viewport-bug-workaround.js}"></script>
-    <script th:src="@{/js/offcanvas.js}"></script>
 </body>
 </html>
