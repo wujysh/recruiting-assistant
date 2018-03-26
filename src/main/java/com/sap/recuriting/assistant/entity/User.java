@@ -1,13 +1,14 @@
 package com.sap.recuriting.assistant.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Jiaye Wu on 18-3-25.
  */
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

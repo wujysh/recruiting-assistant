@@ -1,6 +1,7 @@
 package com.sap.recuriting.assistant.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "company")
-public class Company {
+public class Company implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
