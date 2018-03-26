@@ -19,11 +19,15 @@ public class User {
     @Column(nullable = false, length = 100)
     private String password;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Company company;
 
     public User() {
 
+    }
+
+    public User(String username) {
+        this.username = username;
     }
 
     public User(Company company, String username) {

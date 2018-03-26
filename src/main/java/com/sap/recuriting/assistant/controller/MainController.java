@@ -47,13 +47,18 @@ public class MainController {
 
     @RequestMapping("/init")
     public String init() {
-        Company company = new Company("SAP");
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         if (companyRepository.findByName("SAP") == null) {
+            Company company = new Company("SAP");
             companyRepository.save(company);
+            if (userRepository.findByUsername("sap") == null) {
+                User user = new User(company, "sap");
+                user.setPassword(encoder.encode("sap"));
+                userRepository.save(user);
+            }
         }
         if (userRepository.findByUsername("admin") == null) {
-            User user = new User(company, "admin");
-            PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+            User user = new User("admin");
             user.setPassword(encoder.encode("admin"));
             userRepository.save(user);
         }
