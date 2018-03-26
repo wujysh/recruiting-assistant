@@ -16,11 +16,20 @@ public class User {
     @Column(unique = true, nullable = false, length = 40)
     private String username;
 
-    @Column(nullable = false, length = 40)
+    @Column(nullable = false, length = 100)
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private Company company;
+
+    public User() {
+
+    }
+
+    public User(Company company, String username) {
+        this.company = company;
+        this.username = username;
+    }
 
     public int getId() {
         return id;

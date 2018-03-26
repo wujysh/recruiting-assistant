@@ -19,6 +19,15 @@ public class Tag {
     @Column(length = 100)
     private String description;
 
+    public Tag() {
+
+    }
+
+    public Tag(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public int getId() {
         return id;
     }

@@ -1,4 +1,4 @@
-package com.sap.recuriting.assistant.config;
+package com.sap.recuriting.assistant.common;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -6,6 +6,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Created by Jiaye Wu on 18-3-23.
+ */
 public class Interceptor implements HandlerInterceptor {
 
     @Override

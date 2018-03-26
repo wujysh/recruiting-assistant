@@ -1,7 +1,6 @@
 package com.sap.recuriting.assistant.entity;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,8 +23,13 @@ public class Company {
     @MapKeyJoinColumn(name = "tag_id", referencedColumnName = "id")
     private Map<Tag, String> properties;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
-    private List<User> users;
+    public Company() {
+
+    }
+
+    public Company(String name) {
+        this.name = name;
+    }
 
     public int getId() {
         return id;
@@ -49,13 +53,5 @@ public class Company {
 
     public void setProperties(Map<Tag, String> properties) {
         this.properties = properties;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 }
