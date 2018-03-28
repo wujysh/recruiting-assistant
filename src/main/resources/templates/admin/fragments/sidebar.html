@@ -1,0 +1,63 @@
+<nav th:fragment="sidebar" class="col-md-2 d-none d-md-block bg-light sidebar" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${current == 'dashboard'} ? active" th:href="@{/admin}">
+                    <i data-feather="home"></i>
+                    Dashboard <span th:if="${current == 'dashboard'}" class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${current == 'company'} ? active" th:href="@{/admin/company}">
+                    <i data-feather="layers"></i>
+                    Company <span th:if="${current == 'company'}" class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${current == 'user'} ? active" th:href="@{/admin/user}">
+                    <i data-feather="user"></i>
+                    User <span th:if="${current == 'user'}" class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${current == 'tag'} ? active" th:href="@{/admin/tag}">
+                    <i data-feather="tag"></i>
+                    Tag <span th:if="${current == 'tag'}" class="sr-only">(current)</span>
+                </a>
+            </li>
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Saved reports</span>
+            <a class="d-flex align-items-center text-muted" href="#">
+                <i data-feather="plus-circle"></i>
+            </a>
+        </h6>
+        <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i data-feather="file-text"></i>
+                    Current month
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i data-feather="file-text"></i>
+                    Previous month
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i data-feather="file-text"></i>
+                    Last quarter
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i data-feather="file-text"></i>
+                    Last year
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
