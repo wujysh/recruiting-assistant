@@ -2,10 +2,12 @@ package com.sap.recuriting.assistant.service;
 
 import com.sap.recuriting.assistant.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by Jiaye Wu on 18-3-26.
  */
+@Service
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
@@ -13,5 +15,9 @@ public class CompanyService {
     @Autowired
     public CompanyService(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
+    }
+
+    public CompanyRepository getCompanyRepository() {
+        return companyRepository;
     }
 }

@@ -2,8 +2,8 @@ package com.sap.recuriting.assistant.controller;
 
 import com.sap.recuriting.assistant.entity.Company;
 import com.sap.recuriting.assistant.entity.User;
-import com.sap.recuriting.assistant.repository.CompanyRepository;
-import com.sap.recuriting.assistant.repository.UserRepository;
+import com.sap.recuriting.assistant.service.CompanyService;
+import com.sap.recuriting.assistant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,14 +19,14 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class MainController {
 
-    private final CompanyRepository companyRepository;
+    private final UserService userService;
 
-    private final UserRepository userRepository;
+    private final CompanyService companyService;
 
     @Autowired
-    public MainController(CompanyRepository companyRepository, UserRepository userRepository) {
-        this.companyRepository = companyRepository;
-        this.userRepository = userRepository;
+    public MainController(UserService userService, CompanyService companyService) {
+        this.userService = userService;
+        this.companyService = companyService;
     }
 
     @RequestMapping("/")
@@ -48,19 +48,19 @@ public class MainController {
     @RequestMapping("/init")
     public String init() {
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        if (companyRepository.findByName("SAP") == null) {
+        if (companyService.getCompanyRepository().findByName("SAP") == null) {
             Company company = new Company("SAP");
-            companyRepository.save(company);
-            if (userRepository.findByUsername("sap") == null) {
+            companyService.getCompanyRepository().save(company);
+            if (userService.getUserRepository().findByUsername("sap") == null) {
                 User user = new User(company, "sap");
                 user.setPassword(encoder.encode("sap"));
-                userRepository.save(user);
+                userService.getUserRepository().save(user);
             }
         }
-        if (userRepository.findByUsername("admin") == null) {
+        if (userService.getUserRepository().findByUsername("admin") == null) {
             User user = new User("admin");
             user.setPassword(encoder.encode("admin"));
-            userRepository.save(user);
+            userService.getUserRepository().save(user);
         }
         return "redirect:/";
     }

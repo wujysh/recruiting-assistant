@@ -33,6 +33,10 @@ public class UserService implements UserDetailsService {
         return new UserPrincipal(user);
     }
 
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
     public User getSessionUser() throws ServiceException {
         try {
             return ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
