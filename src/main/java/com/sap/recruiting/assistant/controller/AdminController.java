@@ -1,10 +1,10 @@
-package com.sap.recuriting.assistant.controller;
+package com.sap.recruiting.assistant.controller;
 
-import com.sap.recuriting.assistant.entity.Company;
-import com.sap.recuriting.assistant.entity.User;
-import com.sap.recuriting.assistant.exception.ServiceException;
-import com.sap.recuriting.assistant.service.CompanyService;
-import com.sap.recuriting.assistant.service.UserService;
+import com.sap.recruiting.assistant.entity.User;
+import com.sap.recruiting.assistant.exception.ServiceException;
+import com.sap.recruiting.assistant.service.UserService;
+import com.sap.recruiting.assistant.entity.Company;
+import com.sap.recruiting.assistant.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -1,4 +1,4 @@
-package com.sap.recuriting.assistant.common;
+package com.sap.recruiting.assistant.common;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;

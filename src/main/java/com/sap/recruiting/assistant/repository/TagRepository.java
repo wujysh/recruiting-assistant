@@ -1,6 +1,6 @@
-package com.sap.recuriting.assistant.repository;
+package com.sap.recruiting.assistant.repository;
 
-import com.sap.recuriting.assistant.entity.Tag;
+import com.sap.recruiting.assistant.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

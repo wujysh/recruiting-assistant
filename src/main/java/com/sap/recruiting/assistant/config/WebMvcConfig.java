@@ -1,6 +1,6 @@
-package com.sap.recuriting.assistant.config;
+package com.sap.recruiting.assistant.config;
 
-import com.sap.recuriting.assistant.common.Interceptor;
+import com.sap.recruiting.assistant.common.Interceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;

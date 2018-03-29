@@ -1,6 +1,6 @@
-package com.sap.recuriting.assistant.config;
+package com.sap.recruiting.assistant.config;
 
-import com.sap.recuriting.assistant.service.UserService;
+import com.sap.recruiting.assistant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

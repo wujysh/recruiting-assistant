@@ -1,9 +1,9 @@
-package com.sap.recuriting.assistant.service;
+package com.sap.recruiting.assistant.service;
 
-import com.sap.recuriting.assistant.common.UserPrincipal;
-import com.sap.recuriting.assistant.entity.User;
-import com.sap.recuriting.assistant.exception.ServiceException;
-import com.sap.recuriting.assistant.repository.UserRepository;
+import com.sap.recruiting.assistant.exception.ServiceException;
+import com.sap.recruiting.assistant.common.UserPrincipal;
+import com.sap.recruiting.assistant.entity.User;
+import com.sap.recruiting.assistant.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

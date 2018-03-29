@@ -1,6 +1,6 @@
-package com.sap.recuriting.assistant.common;
+package com.sap.recruiting.assistant.common;
 
-import com.sap.recuriting.assistant.entity.User;
+import com.sap.recruiting.assistant.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package com.sap.recuriting.assistant.entity;
+package com.sap.recruiting.assistant.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;

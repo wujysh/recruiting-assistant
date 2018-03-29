@@ -1,4 +1,4 @@
-package com.sap.recuriting.assistant;
+package com.sap.recruiting.assistant;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

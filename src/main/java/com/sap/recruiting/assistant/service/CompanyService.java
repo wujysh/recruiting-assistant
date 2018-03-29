@@ -1,6 +1,6 @@
-package com.sap.recuriting.assistant.service;
+package com.sap.recruiting.assistant.service;
 
-import com.sap.recuriting.assistant.repository.CompanyRepository;
+import com.sap.recruiting.assistant.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

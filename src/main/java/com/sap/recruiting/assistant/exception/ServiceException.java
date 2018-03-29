@@ -1,4 +1,4 @@
-package com.sap.recuriting.assistant.exception;
+package com.sap.recruiting.assistant.exception;
 
 /**
  * Created by Jiaye Wu on 18-3-26.

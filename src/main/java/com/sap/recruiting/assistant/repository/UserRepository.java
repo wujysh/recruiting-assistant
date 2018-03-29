@@ -1,7 +1,7 @@
-package com.sap.recuriting.assistant.repository;
+package com.sap.recruiting.assistant.repository;
 
-import com.sap.recuriting.assistant.entity.Company;
-import com.sap.recuriting.assistant.entity.User;
+import com.sap.recruiting.assistant.entity.Company;
+import com.sap.recruiting.assistant.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
