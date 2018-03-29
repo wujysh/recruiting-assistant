@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head lang="en" th:replace="admin/fragments/header :: header"></head>
+<body>
+<nav lang="en" th:replace="admin/fragments/navbar :: navbar"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav lang="en" th:replace="admin/fragments/sidebar :: sidebar(current='user')"></nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div th:if="${failure}" class="alert alert-danger" role="alert" th:text="${failure}"></div>
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert" th:text="${success}"></div>
+
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                <h1 class="h2" th:text="${user.id == 0} ? 'New user' : 'User: ' + ${user.username}"></h1>
+                <div class="btn-toolbar mb-2 mb-md-0" th:if="${currentUser.company == null}">
+                    <div class="btn-group mr-2">
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/user}">Back to list</a>
+                    </div>
+                </div>
+            </div>
+            <form th:action="@{/admin/user/{id}(id=${user.id == 0} ? 'new' : ${user.id})}" method="post">
+                <div class="form-group row" th:if="${user.id != 0}">
+                    <label for="id" class="col-sm-2 col-form-label">ID</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext" id="id" name="id" th:value="${user.id}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="username" class="col-sm-2 col-form-label">Username</label>
+                    <div class="col-sm-10">
+                        <input th:if="${user.id == 0}" type="text" class="form-control" id="username" name="username" th:value="${user.username}" required>
+                        <input th:if="${user.id != 0}" type="text" readonly class="form-control-plaintext" id="username" name="username" th:value="${user.username}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="password" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="password_confirm" class="col-sm-2 col-form-label">Confirm Password</label>
+                    <div class="col-sm-10">
+                        <input type="password" class="form-control" id="password_confirm" name="password_confirm" required>
+                        <small id="message" class="form-text text-muted"></small>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="company" class="col-sm-2 col-form-label">Company</label>
+                    <div class="col-sm-10">
+                        <input th:if="${user.id != 0}" type="text" readonly class="form-control-plaintext" id="company" name="companyId" th:value="${user.company == null} ? 'Super Administrator' : ${user.company.name}">
+                        <select th:if="${user.id == 0}" id="company" name="companyId" class="form-control" required>
+                            <option value="" selected disabled hidden>Please choose here ...</option>
+                            <option th:each="company : ${companyList}" th:value="${company.id}" th:text="${company.name}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary" th:text="${user.id == 0} ? 'Submit' : 'Update'" disabled></button>
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+<div lang="en" th:replace="admin/fragments/footer :: footer"></div>
+<script>
+    $('#password, #password_confirm').on('keyup', function () {
+        if ($('#password').val() === $('#password_confirm').val()) {
+            $('#message').html('Matching');
+            $(':input[type="submit"]').prop('disabled', false);
+        } else {
+            $('#message').html('Not Matching');
+            $(':input[type="submit"]').prop('disabled', true);
+        }
+    });
+</script>
+</body>
+</html>

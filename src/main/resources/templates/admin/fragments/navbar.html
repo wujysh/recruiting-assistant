@@ -1,6 +1,6 @@
 <nav th:fragment="navbar" class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" xmlns:th="http://www.w3.org/1999/xhtml">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" th:href="@{/admin}">
-        <span th:text="${user.company != null} ? ${user.company.name} : 'Smart Recruiting Assistant'"></span>
+        <span th:text="${currentUser.company != null} ? ${currentUser.company.name} : 'Smart Recruiting Assistant'"></span>
     </a>
 
     <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
