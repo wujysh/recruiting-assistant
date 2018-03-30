@@ -242,7 +242,7 @@ public class AdminController {
                 PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
                 user.get().setPassword(encoder.encode(password));
                 userService.getUserRepository().save(user.get());
-                attributes.addFlashAttribute("success", "User has been created successfully.");
+                attributes.addFlashAttribute("success", "User has been updated successfully.");
             } else {
                 attributes.addFlashAttribute("failure", "Not Authorized!");
             }
