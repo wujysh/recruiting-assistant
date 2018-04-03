@@ -1,0 +1,2 @@
+model_checkpoint_path: "/home/I339493/Python/30-Text Classification/text_classification_cnn_rnn_byton/checkpoints/byton/conv2d/best_validation"
+all_model_checkpoint_paths: "/home/I339493/Python/30-Text Classification/text_classification_cnn_rnn_byton/checkpoints/byton/conv2d/best_validation"
