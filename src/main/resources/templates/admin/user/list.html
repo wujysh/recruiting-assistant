@@ -40,7 +40,7 @@
                             <div class="btn-toolbar mb-2 mb-md-0">
                                 <div class="btn-group">
                                     <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/user/{id}(id=${user.id})}">Update</a>
-                                    <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/user/{id}/delete(id=${user.id})}" onClick="return confirm('Are you sure to delete this user?')">Delete</a>
+                                    <a class="btn btn-sm btn-outline-danger" th:href="@{/admin/user/{id}/delete(id=${user.id})}" onClick="return confirm('Are you sure to delete this user?')">Delete</a>
                                 </div>
                             </div>
                         </td>

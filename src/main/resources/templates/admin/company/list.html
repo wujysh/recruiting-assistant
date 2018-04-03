@@ -27,6 +27,7 @@
                     <tr>
                         <th>#</th>
                         <th>Name</th>
+                        <th>Tag</th>
                         <th>Operation</th>
                     </tr>
                     </thead>
@@ -35,10 +36,13 @@
                         <td th:text="${company.id}"></td>
                         <td th:text="${company.name}"></td>
                         <td>
+                            <a class="btn btn-sm btn-outline-dark" th:href="@{/admin/company/{id}/tag(id=${company.id})}">Tag</a>
+                        </td>
+                        <td>
                             <div class="btn-toolbar mb-2 mb-md-0">
                                 <div class="btn-group">
                                     <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/company/{id}(id=${company.id})}">Update</a>
-                                    <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/company/{id}/delete(id=${company.id})}" onClick="return confirm('Are you sure to delete this company?')">Delete</a>
+                                    <a class="btn btn-sm btn-outline-danger" th:href="@{/admin/company/{id}/delete(id=${company.id})}" onClick="return confirm('Are you sure to delete this company?')">Delete</a>
                                 </div>
                             </div>
                         </td>

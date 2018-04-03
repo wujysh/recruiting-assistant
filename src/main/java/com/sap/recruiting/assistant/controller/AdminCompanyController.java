@@ -22,14 +22,14 @@ import java.util.Optional;
  * Created by Jiaye Wu on 18-4-3.
  */
 @Controller
-public class CompanyController {
+public class AdminCompanyController {
 
     private final UserService userService;
 
     private final CompanyService companyService;
 
     @Autowired
-    public CompanyController(UserService userService, CompanyService companyService) {
+    public AdminCompanyController(UserService userService, CompanyService companyService) {
         this.userService = userService;
         this.companyService = companyService;
     }

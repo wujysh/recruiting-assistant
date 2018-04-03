@@ -3,7 +3,6 @@ package com.sap.recruiting.assistant.controller;
 import com.sap.recruiting.assistant.entity.Tag;
 import com.sap.recruiting.assistant.entity.User;
 import com.sap.recruiting.assistant.exception.ServiceException;
-import com.sap.recruiting.assistant.service.CompanyService;
 import com.sap.recruiting.assistant.service.TagService;
 import com.sap.recruiting.assistant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +22,15 @@ import java.util.Optional;
  * Created by Jiaye Wu on 18-4-3.
  */
 @Controller
-public class TagController {
+public class AdminTagController {
 
     private final UserService userService;
-
-    private final CompanyService companyService;
 
     private final TagService tagService;
 
     @Autowired
-    public TagController(UserService userService, CompanyService companyService, TagService tagService) {
+    public AdminTagController(UserService userService, TagService tagService) {
         this.userService = userService;
-        this.companyService = companyService;
         this.tagService = tagService;
     }
 

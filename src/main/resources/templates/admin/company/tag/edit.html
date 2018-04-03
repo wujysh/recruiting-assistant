@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head lang="en" th:replace="admin/fragments/header :: header"></head>
+<body>
+<nav lang="en" th:replace="admin/fragments/navbar :: navbar"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav lang="en" th:replace="admin/fragments/sidebar :: sidebar(current='tag')"></nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div th:if="${failure}" class="alert alert-danger" role="alert" th:text="${failure}"></div>
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert" th:text="${success}"></div>
+
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                <h1 class="h2" th:text="'Tag of Company: ' + ${company.name}"></h1>
+                <div class="btn-toolbar mb-2 mb-md-0" th:if="${currentUser.company == null}">
+                    <div class="btn-group mr-2">
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/company}">Back to list</a>
+                    </div>
+                </div>
+            </div>
+
+            <form th:action="@{/admin/company/{id}/tag(id=${company.id})}" th:object="${companyTagForm}" method="post">
+                <div class="form-group row" th:each="tag, st : *{tagMap}">
+                    <label th:for="'tag_' + ${st.index}" class="col-sm-2 col-form-label" th:text="${tag.key}"></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" th:id="'tag_' + ${st.index}" th:field="*{tagMap[__${tag.key}__]}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+<div lang="en" th:replace="admin/fragments/footer :: footer"></div>
+</body>
+</html>

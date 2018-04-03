@@ -12,12 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
  * Created by Jiaye Wu on 18-3-26.
  */
 @Controller
-public class AdminController {
+public class AdminMainController {
 
     private final UserService userService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminMainController(UserService userService) {
         this.userService = userService;
     }
 
