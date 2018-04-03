@@ -48,19 +48,19 @@ public class MainController {
     @RequestMapping("/init")
     public String init() {
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        if (companyService.getCompanyRepository().findByName("SAP") == null) {
+        if (!userService.getUserRepository().findByUsername("admin").isPresent()) {
+            User user = new User("admin");
+            user.setPassword(encoder.encode("admin"));
+            userService.getUserRepository().save(user);
+        }
+        if (!companyService.getCompanyRepository().findByName("SAP").isPresent()) {
             Company company = new Company("SAP");
             companyService.getCompanyRepository().save(company);
-            if (userService.getUserRepository().findByUsername("sap") == null) {
+            if (!userService.getUserRepository().findByUsername("sap").isPresent()) {
                 User user = new User(company, "sap");
                 user.setPassword(encoder.encode("sap"));
                 userService.getUserRepository().save(user);
             }
-        }
-        if (userService.getUserRepository().findByUsername("admin") == null) {
-            User user = new User("admin");
-            user.setPassword(encoder.encode("admin"));
-            userService.getUserRepository().save(user);
         }
         return "redirect:/";
     }

@@ -28,17 +28,17 @@ import java.util.Optional;
 @Controller
 public class AdminCompanyTagController {
 
-    private final UserService userService;
-
     private final CompanyService companyService;
 
     private final TagService tagService;
 
+    private final UserService userService;
+
     @Autowired
-    public AdminCompanyTagController(UserService userService, CompanyService companyService, TagService tagService) {
-        this.userService = userService;
+    public AdminCompanyTagController(CompanyService companyService, TagService tagService, UserService userService) {
         this.companyService = companyService;
         this.tagService = tagService;
+        this.userService = userService;
     }
 
     @RequestMapping(value = "/admin/company/{id}/tag", method = RequestMethod.GET)

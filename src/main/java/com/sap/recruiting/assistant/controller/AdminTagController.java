@@ -1,8 +1,10 @@
 package com.sap.recruiting.assistant.controller;
 
+import com.sap.recruiting.assistant.entity.Company;
 import com.sap.recruiting.assistant.entity.Tag;
 import com.sap.recruiting.assistant.entity.User;
 import com.sap.recruiting.assistant.exception.ServiceException;
+import com.sap.recruiting.assistant.service.CompanyService;
 import com.sap.recruiting.assistant.service.TagService;
 import com.sap.recruiting.assistant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,14 +27,17 @@ import java.util.Optional;
 @Controller
 public class AdminTagController {
 
-    private final UserService userService;
-
     private final TagService tagService;
 
+    private final UserService userService;
+
+    private final CompanyService companyService;
+
     @Autowired
-    public AdminTagController(UserService userService, TagService tagService) {
-        this.userService = userService;
+    public AdminTagController(TagService tagService, UserService userService, CompanyService companyService) {
         this.tagService = tagService;
+        this.userService = userService;
+        this.companyService = companyService;
     }
 
     @RequestMapping("/admin/tag")
@@ -128,6 +134,13 @@ public class AdminTagController {
             attributes.addFlashAttribute("failure", "Tag not found!");
         } else {
             if (currentUser.getCompany() == null) {  // super administrator only
+                List<Company> companyList = companyService.getCompanyRepository().findAll();
+                for (Company company : companyList) {
+                    if (company.getProperties().containsKey(tag.get())) {
+                        company.getProperties().remove(tag.get());
+                        companyService.getCompanyRepository().save(company);
+                    }
+                }
                 tagService.getTagRepository().delete(tag.get());
                 attributes.addFlashAttribute("success", "Tag has been deleted successfully.");
             } else {

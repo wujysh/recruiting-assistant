@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,14 +25,14 @@ import java.util.Optional;
 @Controller
 public class AdminCompanyController {
 
-    private final UserService userService;
-
     private final CompanyService companyService;
 
+    private final UserService userService;
+
     @Autowired
-    public AdminCompanyController(UserService userService, CompanyService companyService) {
-        this.userService = userService;
+    public AdminCompanyController(CompanyService companyService, UserService userService) {
         this.companyService = companyService;
+        this.userService = userService;
     }
 
     @RequestMapping("/admin/company")
@@ -126,6 +127,10 @@ public class AdminCompanyController {
             attributes.addFlashAttribute("failure", "Company not found!");
         } else {
             if (currentUser.getCompany() == null || currentUser.getCompany().getId() == company.get().getId()) {  // super administrator / the managed company
+                List<User> userList = userService.getUserRepository().findByCompany(company.get());
+                for (User user : userList) {
+                    userService.getUserRepository().delete(user);
+                }
                 companyService.getCompanyRepository().delete(company.get());
                 attributes.addFlashAttribute("success", "Company has been deleted successfully.");
             } else {
