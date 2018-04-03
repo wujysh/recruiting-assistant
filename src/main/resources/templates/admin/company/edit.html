@@ -16,7 +16,7 @@
                 <h1 class="h2" th:text="${company.id == 0} ? 'New company' : 'Company: ' + ${company.name}"></h1>
                 <div class="btn-toolbar mb-2 mb-md-0" th:if="${currentUser.company == null}">
                     <div class="btn-group mr-2">
-                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/company}">Back to list</a>
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/company}"><i data-feather="arrow-left"></i> Back to list</a>
                     </div>
                 </div>
             </div>

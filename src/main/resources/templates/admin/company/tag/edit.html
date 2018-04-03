@@ -13,10 +13,10 @@
             <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert" th:text="${success}"></div>
 
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-                <h1 class="h2" th:text="'Tag of Company: ' + ${company.name}"></h1>
+                <h1 class="h2" th:text="'Tag of company: ' + ${company.name}"></h1>
                 <div class="btn-toolbar mb-2 mb-md-0" th:if="${currentUser.company == null}">
                     <div class="btn-group mr-2">
-                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/company}">Back to list</a>
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/company}"><i data-feather="arrow-left"></i> Back to list</a>
                     </div>
                 </div>
             </div>

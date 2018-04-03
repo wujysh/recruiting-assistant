@@ -16,7 +16,7 @@
                 <h1 class="h2" th:text="${tag.id == 0} ? 'New tag' : 'Tag: ' + ${tag.name}"></h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group mr-2">
-                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/tag}">Back to list</a>
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/tag}"><i data-feather="arrow-left"></i> Back to list</a>
                     </div>
                 </div>
             </div>

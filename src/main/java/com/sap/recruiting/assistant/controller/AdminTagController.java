@@ -55,7 +55,7 @@ public class AdminTagController {
                     attributes.addFlashAttribute(entry.getKey(), entry.getValue());
                 }
             }
-            return new ModelAndView("redirect:/admin/tag/company/" + currentUser.getCompany().getId());
+            return new ModelAndView("redirect:/admin/company/" + currentUser.getCompany().getId() + "/tag");
         }
     }
 

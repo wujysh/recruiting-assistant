@@ -16,7 +16,7 @@
                 <h1 class="h2">User</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group mr-2">
-                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/user/new}">New</a>
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/user/new}"><i data-feather="plus"></i> New</a>
                     </div>
                 </div>
             </div>
@@ -39,8 +39,8 @@
                         <td>
                             <div class="btn-toolbar mb-2 mb-md-0">
                                 <div class="btn-group">
-                                    <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/user/{id}(id=${user.id})}">Update</a>
-                                    <a class="btn btn-sm btn-outline-danger" th:href="@{/admin/user/{id}/delete(id=${user.id})}" onClick="return confirm('Are you sure to delete this user?')">Delete</a>
+                                    <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/user/{id}(id=${user.id})}"><i data-feather="edit-3"></i> Update</a>
+                                    <a class="btn btn-sm btn-outline-danger" th:href="@{/admin/user/{id}/delete(id=${user.id})}" onClick="return confirm('Are you sure to delete this user?')"><i data-feather="trash-2"></i> Delete</a>
                                 </div>
                             </div>
                         </td>
