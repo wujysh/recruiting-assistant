@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head lang="en" th:replace="admin/fragments/header :: header"></head>
+<body>
+<nav lang="en" th:replace="admin/fragments/navbar :: navbar"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav lang="en" th:replace="admin/fragments/sidebar :: sidebar(current='question')"></nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div th:if="${failure}" class="alert alert-danger" role="alert" th:text="${failure}"></div>
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert" th:text="${success}"></div>
+
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                <h1 class="h2" th:text="${question.id == 0} ? 'New question' : 'Question: ' + ${question.content}"></h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group mr-2">
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question}"><i data-feather="arrow-left"></i> Back to list</a>
+                    </div>
+                </div>
+            </div>
+            <form th:action="@{/admin/question/{id}(id=${question.id == 0} ? 'new' : ${question.id})}" method="post">
+                <div class="form-group row" th:if="${question.id != 0}">
+                    <label for="id" class="col-sm-2 col-form-label">ID</label>
+                    <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext" id="id" name="id" th:value="${question.id}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="content" class="col-sm-2 col-form-label">Content</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="content" name="content" th:value="${question.content}" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="type" class="col-sm-2 col-form-label">Type</label>
+                    <div class="col-sm-10">
+                        <select id="type" name="type" class="form-control" required>
+                            <option value="0" th:selected="${question.type == 0}">批量导入</option>
+                            <option value="1" th:selected="${question.type == 1}">用户提问</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="company" class="col-sm-2 col-form-label">Company</label>
+                    <div class="col-sm-10">
+                        <select id="company" name="companyId" class="form-control">
+                            <option value="0"></option>
+                            <option th:each="company : ${companyList}" th:value="${company.id}" th:text="${company.name}" th:selected="${question.company?.id == company.id}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="tag" class="col-sm-2 col-form-label">Tag</label>
+                    <div class="col-sm-10">
+                        <select id="tag" name="tagId" class="form-control">
+                            <option value="0"></option>
+                            <option th:each="tag : ${tagList}" th:value="${tag.id}" th:text="${tag.name}" th:selected="${question.tag?.id == tag.id}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary" th:text="${question.id == 0} ? 'Submit' : 'Update'"></button>
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+<div lang="en" th:replace="admin/fragments/footer :: footer"></div>
+</body>
+</html>

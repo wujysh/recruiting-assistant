@@ -25,6 +25,12 @@
                     Tag <span th:if="${current == 'tag'}" class="sr-only">(current)</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${current == 'question'} ? active" th:href="@{/admin/question}">
+                    <i data-feather="help-circle"></i>
+                    Question <span th:if="${current == 'question'}" class="sr-only">(current)</span>
+                </a>
+            </li>
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">

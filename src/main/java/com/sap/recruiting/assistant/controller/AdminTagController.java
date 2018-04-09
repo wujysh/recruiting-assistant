@@ -127,7 +127,7 @@ public class AdminTagController {
     }
 
     @RequestMapping(value = "/admin/tag/{id}/delete")
-    public String taDelete(@PathVariable int id, RedirectAttributes attributes) throws ServiceException {
+    public String tagDelete(@PathVariable int id, RedirectAttributes attributes) throws ServiceException {
         User currentUser = userService.getSessionUser();
         Optional<Tag> tag = tagService.getTagRepository().findById(id);
         if (!tag.isPresent()) {

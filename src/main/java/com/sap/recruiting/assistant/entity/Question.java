@@ -23,6 +23,9 @@ public class Question implements Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     private Tag tag;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private Company company;
+
     public Question() {
 
     }
@@ -62,5 +65,13 @@ public class Question implements Serializable {
 
     public void setTag(Tag tag) {
         this.tag = tag;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }
