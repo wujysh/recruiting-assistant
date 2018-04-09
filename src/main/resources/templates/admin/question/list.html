@@ -16,6 +16,9 @@
                 <h1 class="h2">Question</h1>
                 <div class="btn-toolbar mb-2 mb-md-0" th:if="${currentUser.company == null}">
                     <div class="btn-group mr-2">
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question/import}"><i data-feather="file-plus"></i> Import</a>
+                    </div>
+                    <div class="btn-group mr-2">
                         <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question/new}"><i data-feather="plus"></i> New</a>
                     </div>
                 </div>

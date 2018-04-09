@@ -14,9 +14,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -52,6 +58,40 @@ public class AdminQuestionController {
         }
         mav.addObject("currentUser", currentUser);
         return mav;
+    }
+
+    @RequestMapping(value = "/admin/question/import", method = RequestMethod.GET)
+    public ModelAndView importGet(RedirectAttributes attributes) throws ServiceException {
+        ModelAndView mav = new ModelAndView("admin/question/import");
+        User currentUser = userService.getSessionUser();
+        if (currentUser.getCompany() == null) {  // super administrator only
+            mav.addObject("currentUser", currentUser);
+            return mav;
+        } else {
+            attributes.addFlashAttribute("failure", "Not Authorized!");
+            return new ModelAndView("redirect:/admin/question");
+        }
+    }
+
+    @RequestMapping(value = "/admin/question/import", method = RequestMethod.POST)
+    public String importPost(@RequestParam("file") MultipartFile file, RedirectAttributes attributes) {
+        if (!file.isEmpty()) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+                List<Question> result = new ArrayList<>();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    Question question = new Question(line, 0);
+                    result.add(question);
+                }
+                questionService.getQuestionRepository().saveAll(result);
+                attributes.addFlashAttribute("success", "Tags have been imported successfully.");
+            } catch (Exception e) {
+                attributes.addFlashAttribute("failure", "Error occurred during import!");
+            }
+        } else {
+            attributes.addFlashAttribute("failure", "Error occurred during import!");
+        }
+        return "redirect:/admin/question";
     }
 
     @RequestMapping(value = "/admin/question/new", method = RequestMethod.GET)
