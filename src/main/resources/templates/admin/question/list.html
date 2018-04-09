@@ -30,8 +30,6 @@
                     <tr>
                         <th>#</th>
                         <th>Content</th>
-                        <th>Type</th>
-                        <th>Company</th>
                         <th>Tag</th>
                         <th th:if="${currentUser.company == null}">Operation</th>
                     </tr>
@@ -39,12 +37,10 @@
                     <tbody>
                     <tr th:each="question : ${questionList}">
                         <td th:text="${question.id}"></td>
-                        <td th:text="${question.content}"></td>
                         <td>
-                            <span th:if="${question.type == 0}">批量导入</span>
-                            <span th:if="${question.type == 1}">用户提问</span>
+                            <span th:text="${question.content}"></span>
+                            <span class="badge badge-light" th:if="${question.company}" th:text="${question.company?.name}"></span>
                         </td>
-                        <td th:text="${question.company?.name}"></td>
                         <td th:text="${question.tag?.name}"></td>
                         <td th:if="${currentUser.company == null}">
                             <div class="btn-toolbar mb-2 mb-md-0">
