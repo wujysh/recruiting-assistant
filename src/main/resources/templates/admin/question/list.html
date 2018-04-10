@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head lang="en" th:replace="admin/fragments/header :: header"></head>
+<script th:src="@{/js/jquery.min.js}"></script>
 <body>
 <nav lang="en" th:replace="admin/fragments/navbar :: navbar"></nav>
 
@@ -16,9 +17,11 @@
                 <h1 class="h2">Question</h1>
                 <div class="btn-toolbar mb-2 mb-md-0" th:if="${currentUser.company == null}">
                     <div class="btn-group mr-2">
-                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question/import}"><i data-feather="file-plus"></i> Import</a>
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question(page=${page-1})}"><i data-feather="arrow-left-circle"></i> Previous</a>
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question(page=${page+1})}"><i data-feather="arrow-right-circle"></i> Next</a>
                     </div>
                     <div class="btn-group mr-2">
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question/import}"><i data-feather="file-plus"></i> Import</a>
                         <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question/new}"><i data-feather="plus"></i> New</a>
                     </div>
                 </div>
@@ -40,8 +43,22 @@
                         <td>
                             <span th:text="${question.content}"></span>
                             <span class="badge badge-light" th:if="${question.company}" th:text="${question.company?.name}"></span>
+                            <span class="badge badge-success" th:id="'status_' + ${question.id}"></span>
                         </td>
-                        <td th:text="${question.tag?.name}"></td>
+                        <td>
+                            <span class="badge badge-dark" th:if="${question.tag != null}" th:text="${question.tag.name}"></span>
+                            <select th:if="${question.tag == null}" th:id="'tag_' + ${question.id}" name="tagId" class="form-control form-control-sm">
+                                <option value="0"></option>
+                                <option th:each="tag : ${tagList}" th:value="${tag.id}" th:text="${tag.name}" th:selected="${question.tag?.id == tag.id}"></option>
+                            </select>
+                            <script th:inline="javascript">
+                                /*<![CDATA[*/
+                                $(document).on("change", '#tag_' + /*[[${question.id}]]*/, function() {
+                                    tagUpdate(/*[[${question.id}]]*/, $(this).val());
+                                });
+                                /*]]>*/
+                            </script>
+                        </td>
                         <td th:if="${currentUser.company == null}">
                             <div class="btn-toolbar mb-2 mb-md-0">
                                 <div class="btn-group">
@@ -59,5 +76,24 @@
 </div>
 
 <div lang="en" th:replace="admin/fragments/footer :: footer"></div>
+<script>
+    var tagUpdate = function(questionId, tagId) {
+        $.ajax({
+            url : "/admin/question/" + questionId + "/tag",
+            data : {
+                "tagId" : tagId
+            },
+            success : function(returnData) {
+                var status = $('#status_' + questionId);
+                if (returnData.success) {
+                    status.html("Saved");
+                } else {
+                    status.html(returnData.message);
+                }
+            },
+            dataType : "json"
+        });
+    };
+</script>
 </body>
 </html>

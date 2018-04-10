@@ -20,11 +20,20 @@
                     </div>
                 </div>
             </div>
-            <form th:action="@{/admin/question/uploadTagFile}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/admin/question/import}" method="post" enctype="multipart/form-data">
                 <div class="form-group row">
                     <label for="file" class="col-sm-2 col-form-label">File</label>
                     <div class="col-sm-10">
                         <input type="file" class="form-control-plaintext" id="file" name="file" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="tagged" class="col-sm-2 col-form-label">Tagged?</label>
+                    <div class="col-sm-10">
+                        <select id="tagged" name="tagged" class="form-control" required>
+                            <option value="1">Tagged</option>
+                            <option value="0">Not tagged</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row">

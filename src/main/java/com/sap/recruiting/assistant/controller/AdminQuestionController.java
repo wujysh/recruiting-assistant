@@ -10,11 +10,9 @@ import com.sap.recruiting.assistant.service.QuestionService;
 import com.sap.recruiting.assistant.service.TagService;
 import com.sap.recruiting.assistant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -48,14 +46,16 @@ public class AdminQuestionController {
     }
 
     @RequestMapping("/admin/question")
-    public ModelAndView questionList() throws ServiceException {
+    public ModelAndView questionList(Pageable pageable) throws ServiceException {
         User currentUser = userService.getSessionUser();
         ModelAndView mav = new ModelAndView("admin/question/list");
         if (currentUser.getCompany() == null) {  // super administrator: display question list
-            mav.addObject("questionList", questionService.getQuestionRepository().findAll());  // TODO: Pageable
+            mav.addObject("questionList", questionService.getQuestionRepository().findAll(pageable));
         } else {  // company manager: display company question list (read only)
-            mav.addObject("questionList", questionService.getQuestionRepository().findByCompany(currentUser.getCompany()));
+            mav.addObject("questionList", questionService.getQuestionRepository().findByCompany(currentUser.getCompany(), pageable));
         }
+        mav.addObject("tagList", tagService.getTagRepository().findAll());
+        mav.addObject("page", pageable.getPageNumber());
         mav.addObject("currentUser", currentUser);
         return mav;
     }
@@ -74,13 +74,28 @@ public class AdminQuestionController {
     }
 
     @RequestMapping(value = "/admin/question/import", method = RequestMethod.POST)
-    public String importPost(@RequestParam("file") MultipartFile file, RedirectAttributes attributes) {
+    public String importPost(@RequestParam("file") MultipartFile file, boolean tagged, RedirectAttributes attributes) {
         if (!file.isEmpty()) {
             try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
                 List<Question> result = new ArrayList<>();
                 String line;
                 while ((line = br.readLine()) != null) {
-                    Question question = new Question(line, 0);
+                    Question question;
+                    if (!tagged) {
+                        question = new Question(line, 0);
+                    } else {
+                        String[] strings = line.split("\t");
+                        if (strings.length < 2) continue;
+                        String tagName = strings[0];
+                        Optional<Tag> tag = tagService.getTagRepository().findByName(tagName);
+                        if (!tag.isPresent() && !tagName.equals("未知")) {
+                            Tag tag1 = new Tag(tagName, tagName);
+                            tagService.getTagRepository().save(tag1);
+                            tag = tagService.getTagRepository().findByName(tagName);
+                        }
+                        question = new Question(strings[1], 0);
+                        question.setTag(tag.orElse(null));
+                    }
                     result.add(question);
                 }
                 questionService.getQuestionRepository().saveAll(result);
@@ -214,5 +229,31 @@ public class AdminQuestionController {
             }
         }
         return "redirect:/admin/question";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/admin/question/{id}/tag")
+    public String questionTag(@PathVariable int id, int tagId) throws ServiceException {
+        User currentUser = userService.getSessionUser();
+        Optional<Question> question = questionService.getQuestionRepository().findById(id);
+        if (!question.isPresent()) {
+            return "{'success': 'false', 'message': 'Question not found!'}";
+        } else {
+            if (currentUser.getCompany() == null) {  // super administrator only
+                Optional<Tag> tag = Optional.empty();
+                if (tagId != 0) {
+                    tag = tagService.getTagRepository().findById(tagId);
+                }
+                if (tagId != 0 && !tag.isPresent()) {
+                    return "{'success': 'false', 'message': 'Tag not found!'}";
+                } else {
+                    question.get().setTag(tag.orElse(null));
+                    questionService.getQuestionRepository().save(question.get());
+                    return "{'success': 'true'}";
+                }
+            } else {
+                return "{'success': 'false', 'message': 'Not Authorized!'}";
+            }
+        }
     }
 }

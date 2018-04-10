@@ -1,10 +1,12 @@
 package com.sap.recruiting.assistant.controller;
 
 import com.sap.recruiting.assistant.entity.Company;
+import com.sap.recruiting.assistant.entity.Question;
 import com.sap.recruiting.assistant.entity.Tag;
 import com.sap.recruiting.assistant.entity.User;
 import com.sap.recruiting.assistant.exception.ServiceException;
 import com.sap.recruiting.assistant.service.CompanyService;
+import com.sap.recruiting.assistant.service.QuestionService;
 import com.sap.recruiting.assistant.service.TagService;
 import com.sap.recruiting.assistant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +35,14 @@ public class AdminTagController {
 
     private final CompanyService companyService;
 
+    private final QuestionService questionService;
+
     @Autowired
-    public AdminTagController(TagService tagService, UserService userService, CompanyService companyService) {
+    public AdminTagController(TagService tagService, UserService userService, CompanyService companyService, QuestionService questionService) {
         this.tagService = tagService;
         this.userService = userService;
         this.companyService = companyService;
+        this.questionService = questionService;
     }
 
     @RequestMapping("/admin/tag")
@@ -140,6 +145,11 @@ public class AdminTagController {
                         company.getProperties().remove(tag.get());
                         companyService.getCompanyRepository().save(company);
                     }
+                }
+                List<Question> questionList = questionService.getQuestionRepository().findByTag(tag.get());
+                for (Question question : questionList) {
+                    question.setTag(null);
+                    questionService.getQuestionRepository().save(question);
                 }
                 tagService.getTagRepository().delete(tag.get());
                 attributes.addFlashAttribute("success", "Tag has been deleted successfully.");
