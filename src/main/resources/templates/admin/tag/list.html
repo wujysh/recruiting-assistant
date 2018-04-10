@@ -28,6 +28,7 @@
                         <th>#</th>
                         <th>Name</th>
                         <th>Description</th>
+                        <th>Question</th>
                         <th>Operation</th>
                     </tr>
                     </thead>
@@ -36,6 +37,9 @@
                         <td th:text="${tag.id}"></td>
                         <td th:text="${tag.name}"></td>
                         <td th:text="${tag.description}"></td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-dark" th:href="@{/admin/question(tagId=${tag.id})}"><i data-feather="help-circle"></i> Question</a>
+                        </td>
                         <td>
                             <div class="btn-toolbar mb-2 mb-md-0">
                                 <div class="btn-group">

@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -46,14 +47,30 @@ public class AdminQuestionController {
     }
 
     @RequestMapping("/admin/question")
-    public ModelAndView questionList(Pageable pageable) throws ServiceException {
+    public ModelAndView questionList(@RequestParam(defaultValue = "0") int type, @RequestParam(defaultValue = "0") int tagId, Pageable pageable, RedirectAttributes attributes) throws ServiceException {
         User currentUser = userService.getSessionUser();
         ModelAndView mav = new ModelAndView("admin/question/list");
-        if (currentUser.getCompany() == null) {  // super administrator: display question list
-            mav.addObject("questionList", questionService.getQuestionRepository().findAll(pageable));
-        } else {  // company manager: display company question list (read only)
-            mav.addObject("questionList", questionService.getQuestionRepository().findByCompany(currentUser.getCompany(), pageable));
+        if (tagId == 0) {
+            if (currentUser.getCompany() == null) {  // super administrator: display question list
+                mav.addObject("questionList", questionService.getQuestionRepository().findByType(type, pageable));
+            } else {  // company manager: display company question list (read only)
+                mav.addObject("questionList", questionService.getQuestionRepository().findByCompanyAndType(currentUser.getCompany(), type, pageable));
+            }
+        } else {
+            Optional<Tag> tag = tagService.getTagRepository().findById(tagId);
+            if (!tag.isPresent()) {
+                attributes.addFlashAttribute("failure", "Tag not found!");
+                return new ModelAndView("redirect:/admin/question");
+            } else {
+                if (currentUser.getCompany() == null) {  // super administrator: display question list
+                    mav.addObject("questionList", questionService.getQuestionRepository().findByTagAndType(tag.get(), type, pageable));
+                } else {  // company manager: display company question list (read only)
+                    mav.addObject("questionList", questionService.getQuestionRepository().findByCompanyAndTagAndType(currentUser.getCompany(), tag.get(), type, pageable));
+                }
+                mav.addObject("tag", tag.get());
+            }
         }
+        mav.addObject("type", type);
         mav.addObject("tagList", tagService.getTagRepository().findAll());
         mav.addObject("page", pageable.getPageNumber());
         mav.addObject("currentUser", currentUser);
@@ -215,7 +232,7 @@ public class AdminQuestionController {
     }
 
     @RequestMapping(value = "/admin/question/{id}/delete")
-    public String questionDelete(@PathVariable int id, RedirectAttributes attributes) throws ServiceException {
+    public String questionDelete(@PathVariable int id, HttpServletRequest request, RedirectAttributes attributes) throws ServiceException {
         User currentUser = userService.getSessionUser();
         Optional<Question> question = questionService.getQuestionRepository().findById(id);
         if (!question.isPresent()) {
@@ -228,7 +245,25 @@ public class AdminQuestionController {
                 attributes.addFlashAttribute("failure", "Not Authorized!");
             }
         }
-        return "redirect:/admin/question";
+        return "redirect:" + request.getHeader("Referer");
+    }
+
+    @RequestMapping(value = "/admin/question/{id}/approve")
+    public String questionApprove(@PathVariable int id, HttpServletRequest request, RedirectAttributes attributes) throws ServiceException {
+        User currentUser = userService.getSessionUser();
+        Optional<Question> question = questionService.getQuestionRepository().findById(id);
+        if (!question.isPresent()) {
+            attributes.addFlashAttribute("failure", "Question not found!");
+        } else {
+            if (currentUser.getCompany() == null) {  // super administrator only
+                question.get().setType(1 - question.get().getType());
+                questionService.getQuestionRepository().save(question.get());
+                attributes.addFlashAttribute("success", "Question has been approved successfully.");
+            } else {
+                attributes.addFlashAttribute("failure", "Not Authorized!");
+            }
+        }
+        return "redirect:" + request.getHeader("Referer");
     }
 
     @ResponseBody

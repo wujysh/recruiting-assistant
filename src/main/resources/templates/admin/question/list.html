@@ -14,13 +14,17 @@
             <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert" th:text="${success}"></div>
 
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-                <h1 class="h2">Question</h1>
-                <div class="btn-toolbar mb-2 mb-md-0" th:if="${currentUser.company == null}">
+                <h1 class="h2">Question<span th:if="${tag != null}" th:text="': ' + ${tag.name}"></span></h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group mr-2">
-                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question(page=${page-1})}"><i data-feather="arrow-left-circle"></i> Previous</a>
-                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question(page=${page+1})}"><i data-feather="arrow-right-circle"></i> Next</a>
+                        <a class="btn btn-sm btn-outline-secondary" th:classappend="${page <= 0} ? 'disabled'" th:href="@{/admin/question(tagId=${tag?.id},type=${type},page=${page-1})}"><i data-feather="chevron-left"></i> Previous</a>
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question(tagId=${tag?.id},type=${type},page=${page+1})}"><i data-feather="chevron-right"></i> Next</a>
                     </div>
                     <div class="btn-group mr-2">
+                        <a class="btn btn-sm btn-outline-secondary" th:classappend="${type == 0} ? 'active'" th:href="@{/admin/question(tagId=${tag?.id},type=0)}"><i data-feather="circle"></i> Pending</a>
+                        <a class="btn btn-sm btn-outline-secondary" th:classappend="${type == 1} ? 'active'" th:href="@{/admin/question(tagId=${tag?.id},type=1)}"><i data-feather="check-circle"></i> Approved</a>
+                    </div>
+                    <div class="btn-group mr-2" th:if="${currentUser.company == null}">
                         <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question/import}"><i data-feather="file-plus"></i> Import</a>
                         <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question/new}"><i data-feather="plus"></i> New</a>
                     </div>
@@ -46,12 +50,12 @@
                             <span class="badge badge-success" th:id="'status_' + ${question.id}"></span>
                         </td>
                         <td>
-                            <span class="badge badge-dark" th:if="${question.tag != null}" th:text="${question.tag.name}"></span>
-                            <select th:if="${question.tag == null}" th:id="'tag_' + ${question.id}" name="tagId" class="form-control form-control-sm">
+                            <a class="badge badge-dark" th:if="${question.tag != null}" th:text="${question.tag.name}" th:href="@{/admin/question(tagId=${question.tag.id})}"></a>
+                            <select th:if="${currentUser.company == null && question.tag == null}" th:id="'tag_' + ${question.id}" name="tagId" class="form-control form-control-sm">
                                 <option value="0"></option>
                                 <option th:each="tag : ${tagList}" th:value="${tag.id}" th:text="${tag.name}" th:selected="${question.tag?.id == tag.id}"></option>
                             </select>
-                            <script th:inline="javascript">
+                            <script th:if="${currentUser.company == null}" th:inline="javascript">
                                 /*<![CDATA[*/
                                 $(document).on("change", '#tag_' + /*[[${question.id}]]*/, function() {
                                     tagUpdate(/*[[${question.id}]]*/, $(this).val());
@@ -62,6 +66,8 @@
                         <td th:if="${currentUser.company == null}">
                             <div class="btn-toolbar mb-2 mb-md-0">
                                 <div class="btn-group">
+                                    <a th:if="${question.type == 0}" class="btn btn-sm btn-outline-success" th:href="@{/admin/question/{id}/approve(id=${question.id})}" onClick="return confirm('Are you sure to approve this question?')"><i data-feather="check"></i> Approve</a>
+                                    <a th:if="${question.type == 1}" class="btn btn-sm btn-outline-warning" th:href="@{/admin/question/{id}/approve(id=${question.id})}" onClick="return confirm('Are you sure to disapprove this question?')"><i data-feather="x"></i> Disapprove</a>
                                     <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question/{id}(id=${question.id})}"><i data-feather="edit-3"></i> Update</a>
                                     <a class="btn btn-sm btn-outline-danger" th:href="@{/admin/question/{id}/delete(id=${question.id})}" onClick="return confirm('Are you sure to delete this question?')"><i data-feather="trash-2"></i> Delete</a>
                                 </div>

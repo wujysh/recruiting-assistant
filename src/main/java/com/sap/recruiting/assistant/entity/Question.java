@@ -18,7 +18,7 @@ public class Question implements Serializable {
     private String content;
 
     @Column(nullable = false)
-    private int type;  // 0 - batch import, 1 - from user
+    private int type;  // 0 - pending audit, 1 - approved
 
     @OneToOne(fetch = FetchType.LAZY)
     private Tag tag;

@@ -25,4 +25,16 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     List<Question> findByCompany(Company company);
 
     Page<Question> findByCompany(Company company, Pageable pageable);
+
+    List<Question> findByCompanyAndType(Company company, int type);
+
+    Page<Question> findByCompanyAndType(Company company, int type, Pageable pageable);
+
+    List<Question> findByTagAndType(Tag tag, int type);
+
+    Page<Question> findByTagAndType(Tag tag, int type, Pageable pageable);
+
+    List<Question> findByCompanyAndTagAndType(Company company, Tag tag, int type);
+
+    Page<Question> findByCompanyAndTagAndType(Company company, Tag tag, int type, Pageable pageable);
 }
