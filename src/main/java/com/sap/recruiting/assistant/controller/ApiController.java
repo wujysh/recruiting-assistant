@@ -7,6 +7,7 @@ import com.sap.recruiting.assistant.entity.Question;
 import com.sap.recruiting.assistant.entity.Tag;
 import com.sap.recruiting.assistant.service.CompanyService;
 import com.sap.recruiting.assistant.service.QuestionService;
+import com.sap.recruiting.assistant.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,10 +27,13 @@ public class ApiController {
 
     private final QuestionService questionService;
 
+    private final TagService tagService;
+
     @Autowired
-    public ApiController(CompanyService companyService, QuestionService questionService) {
+    public ApiController(CompanyService companyService, QuestionService questionService, TagService tagService) {
         this.companyService = companyService;
         this.questionService = questionService;
+        this.tagService = tagService;
     }
 
     @RequestMapping("/ask")
@@ -40,21 +44,27 @@ public class ApiController {
         question.setCompany(company.orElse(null));
 
         // get tag from model calculation
-        Tag tag = questionService.getQuestionTagFromModel(question);
-        question.setTag(tag);
+        String tagString = questionService.getQuestionTagFromModel(question.getContent());
+        Optional<Tag> tag;
+        if (tagString.startsWith("40")) {
+            tag = Optional.empty();
+        } else {
+            tag = tagService.getTagRepository().findByName(tagString);
+        }
+        question.setTag(tag.orElse(null));
 
         // record the question for future model improvement
         questionService.getQuestionRepository().save(question);
 
         // construct the response structure
         AskResponse response = new AskResponse();
-        if (tag != null && company.isPresent() && company.get().getProperties().containsKey(tag)) {
-            response.setAnswer(company.get().getProperties().get(tag));
+        if (tag.isPresent() && company.isPresent() && company.get().getProperties().containsKey(tag.get())) {
+            response.setAnswer(company.get().getProperties().get(tag.get()));
             response.setSuccess(true);
         } else {
+            response.setAnswer(tagString);
             response.setSuccess(false);
         }
         return response;
     }
-
 }

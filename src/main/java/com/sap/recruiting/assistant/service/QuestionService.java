@@ -1,7 +1,5 @@
 package com.sap.recruiting.assistant.service;
 
-import com.sap.recruiting.assistant.entity.Question;
-import com.sap.recruiting.assistant.entity.Tag;
 import com.sap.recruiting.assistant.repository.QuestionRepository;
 import com.sap.recruiting.assistant.repository.TagRepository;
 import org.slf4j.Logger;
@@ -13,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Optional;
 
 /**
  * Created by Jiaye Wu on 18-4-9.
@@ -37,20 +34,24 @@ public class QuestionService {
         return questionRepository;
     }
 
-    public Tag getQuestionTagFromModel(Question question) {
+    public String getQuestionTagFromModel(String question) {
         try {
-            ProcessBuilder pb = new ProcessBuilder("python", "model.py", question.getContent());
+            // execute the model in python
+            ProcessBuilder pb = new ProcessBuilder("python", "model.py", question);
             pb.directory(new File("model"));
             Process p = pb.start();
 
+            // collect the output stream
             BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            System.out.println(in.readLine());
-
-            Optional<Tag> tag = tagRepository.findByName("");
-            return tag.orElse(null);
+            String code = in.readLine().split(":")[1];
+            if (code.equals("200")) {
+                return in.readLine().split(":")[1];
+            } else {
+                return code;
+            }
         } catch (IOException e) {
             logger.error(e.getMessage(), e.getCause());
-            return null;
+            return "400";
         }
     }
 }
