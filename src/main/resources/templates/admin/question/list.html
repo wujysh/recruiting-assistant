@@ -18,7 +18,7 @@
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group mr-2">
                         <a class="btn btn-sm btn-outline-secondary" th:classappend="${page <= 0} ? 'disabled'" th:href="@{/admin/question(tagId=${tag?.id},type=${type},page=${page-1})}"><i data-feather="chevron-left"></i> Previous</a>
-                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question(tagId=${tag?.id},type=${type},page=${page+1})}"><i data-feather="chevron-right"></i> Next</a>
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/question(tagId=${tag?.id},type=${type},page=${page+1})}">Next <i data-feather="chevron-right"></i></a>
                     </div>
                     <div class="btn-group mr-2">
                         <a class="btn btn-sm btn-outline-secondary" th:classappend="${type == 0} ? 'active'" th:href="@{/admin/question(tagId=${tag?.id},type=0)}"><i data-feather="circle"></i> Pending</a>
