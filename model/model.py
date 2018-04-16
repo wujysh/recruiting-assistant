@@ -42,21 +42,26 @@ def deal_data(data):
     return test_vec
 
 try:
+    result = dict()
     test_vec = deal_data(data)
     test_y = clf.predict([test_vec])
 except ValueError:
-    fr = open('label.json','w')
-    fr.write('400')
+    result['code'] = 400
+    print 'code:' + str(result['code'])
     sys.exit(1)
 else:
     try:
         labels = ['公司简介','网址','工作时间','地址','感受','前景','面试','福利','要求']
         test_y = list(test_y[0])
-        print test_y
-        print labels[test_y.index(1)]
+        a = labels[test_y.index(1)]
+        # print test_y
+        # print labels[test_y.index(1)]
     except ValueError:
-        fr = open('label.json', 'w')
-        fr.write('401')
+        result['code'] = 401
+        print 'code:' + str(result['code'])
     else:
-        fr = open('label.json','w')
-        fr.write('200 '+labels[test_y.index(1)])
+        result['code'] = 200
+        result['label'] = labels[test_y.index(1)]
+        print 'code:' + str(result['code'])
+        print 'label:' + result['label']
+
