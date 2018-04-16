@@ -1,17 +1,14 @@
 package com.sap.recruiting.assistant.controller;
 
-import com.sap.recruiting.assistant.service.UserService;
 import com.sap.recruiting.assistant.entity.Company;
 import com.sap.recruiting.assistant.entity.User;
 import com.sap.recruiting.assistant.service.CompanyService;
+import com.sap.recruiting.assistant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by Jiaye Wu on 18-3-23.
@@ -30,19 +27,8 @@ public class MainController {
     }
 
     @RequestMapping("/")
-    public ModelAndView index(HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView("index");
-        return mav;
-    }
-
-    @RequestMapping("/about")
-    public String about() {
-        return "about";
-    }
-
-    @RequestMapping("/contact")
-    public String contact() {
-        return "contact";
+    public String index() {
+        return "redirect:/admin";
     }
 
     @RequestMapping("/init")
