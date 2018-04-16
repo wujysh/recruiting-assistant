@@ -37,6 +37,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/admin")
                 .permitAll()
                 .and()
+            .csrf()
+                .ignoringAntMatchers("/api/**")
+                .and()
             .logout()
                 .permitAll();
     }
