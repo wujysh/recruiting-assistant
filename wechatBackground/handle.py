@@ -57,6 +57,8 @@ class Handle(object):
                     #     content = "此设备数据如下:\n"+"1.id号为 "+a['data'][0]['id']+"\n"+"2.温度为 "+a['data'][0]['temp']+"\n"+"3.湿度为 "+a['data'][0]['humidity']+"\n"+"4.PM2.5浓度为 "+a['data'][0]['pm25']+"ug\n"+"5.PM10浓度为 "+a['data'][0]['pm10']+"\n"+"6.光照 "+a['data'][0]['illumination']+"L\n"+israin
                     #     #content = "%s\n%s %s\n%s %s\n%s %s\n%s %s\n%s %s\n%s" %('环境数据如下：','设备id号为',a['data']['id'],'temp is', a['data']['temp'], 'humidity is', a['data']['humidity'],'PM25 is',a['data']['pm25'],'illumination',a['data']['illumination'],israin)
                     #     #print(content)
+                    #debug 4/16 7:42
+                    if recMsg.Content == '' 
                     getrlt.getRlt(recMsg)
                     content = "欢迎使用"+recMsg.Content+"公司AI招聘系统！"
                     replyMsg = reply.TextMsg(toUser, fromUser, content)
@@ -82,7 +84,7 @@ class Handle(object):
                     event = recMsg.Event
                     #print(event)
                     if event == 'subscribe':
-                        content = "欢迎关注SAP智能招聘助手！"
+                        content = "欢迎关注智能招聘助手！回复“公司+（您想面试的公司名称）”即可开始招聘问答"
                         replyMsg = reply.TextMsg(toUser, fromUser, content)
                         return replyMsg.send()
                 else:
