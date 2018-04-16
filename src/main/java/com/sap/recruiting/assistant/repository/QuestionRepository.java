@@ -16,25 +16,25 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 
     List<Question> findByType(int type);
 
-    Page<Question> findByType(int type, Pageable pageable);
+    Page<Question> findByTypeOrderByIdDesc(int type, Pageable pageable);
 
     List<Question> findByTag(Tag tag);
 
-    Page<Question> findByTag(Tag tag, Pageable pageable);
+    Page<Question> findByTagOrderByIdDesc(Tag tag, Pageable pageable);
 
     List<Question> findByCompany(Company company);
 
-    Page<Question> findByCompany(Company company, Pageable pageable);
+    Page<Question> findByCompanyOrderByIdDesc(Company company, Pageable pageable);
 
     List<Question> findByCompanyAndType(Company company, int type);
 
-    Page<Question> findByCompanyAndType(Company company, int type, Pageable pageable);
+    Page<Question> findByCompanyAndTypeOrderByIdDesc(Company company, int type, Pageable pageable);
 
     List<Question> findByTagAndType(Tag tag, int type);
 
-    Page<Question> findByTagAndType(Tag tag, int type, Pageable pageable);
+    Page<Question> findByTagAndTypeOrderByIdDesc(Tag tag, int type, Pageable pageable);
 
     List<Question> findByCompanyAndTagAndType(Company company, Tag tag, int type);
 
-    Page<Question> findByCompanyAndTagAndType(Company company, Tag tag, int type, Pageable pageable);
+    Page<Question> findByCompanyAndTagAndTypeOrderByIdDesc(Company company, Tag tag, int type, Pageable pageable);
 }

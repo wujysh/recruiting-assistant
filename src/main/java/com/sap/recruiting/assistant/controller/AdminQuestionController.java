@@ -52,9 +52,9 @@ public class AdminQuestionController {
         ModelAndView mav = new ModelAndView("admin/question/list");
         if (tagId == 0) {
             if (currentUser.getCompany() == null) {  // super administrator: display question list
-                mav.addObject("questionList", questionService.getQuestionRepository().findByType(type, pageable));
+                mav.addObject("questionList", questionService.getQuestionRepository().findByTypeOrderByIdDesc(type, pageable));
             } else {  // company manager: display company question list (read only)
-                mav.addObject("questionList", questionService.getQuestionRepository().findByCompanyAndType(currentUser.getCompany(), type, pageable));
+                mav.addObject("questionList", questionService.getQuestionRepository().findByCompanyAndTypeOrderByIdDesc(currentUser.getCompany(), type, pageable));
             }
         } else {
             Optional<Tag> tag = tagService.getTagRepository().findById(tagId);
@@ -63,9 +63,9 @@ public class AdminQuestionController {
                 return new ModelAndView("redirect:/admin/question");
             } else {
                 if (currentUser.getCompany() == null) {  // super administrator: display question list
-                    mav.addObject("questionList", questionService.getQuestionRepository().findByTagAndType(tag.get(), type, pageable));
+                    mav.addObject("questionList", questionService.getQuestionRepository().findByTagAndTypeOrderByIdDesc(tag.get(), type, pageable));
                 } else {  // company manager: display company question list (read only)
-                    mav.addObject("questionList", questionService.getQuestionRepository().findByCompanyAndTagAndType(currentUser.getCompany(), tag.get(), type, pageable));
+                    mav.addObject("questionList", questionService.getQuestionRepository().findByCompanyAndTagAndTypeOrderByIdDesc(currentUser.getCompany(), tag.get(), type, pageable));
                 }
                 mav.addObject("tag", tag.get());
             }
