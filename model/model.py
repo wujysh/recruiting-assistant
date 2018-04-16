@@ -6,9 +6,10 @@ from sklearn import svm
 from sklearn.preprocessing import label_binarize
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.externals import joblib
+import sys
 
 clf = joblib.load('clf.model')
-data = raw_input("输入问题：")
+data = sys.argv[1]
 
 
 def get_test_vec(test, corpus):
@@ -28,21 +29,34 @@ def deal_data(data):
         y.append(list[0])
     X_ = []
     for i in X:
-        sentence = jieba.cut(i)
+        sentence = jieba.cut(i, cut_all=True)
         words = ' '.join(sentence)
         X_.append(words)
 
     X_test = []
-    sentence = jieba.cut(data)
+    sentence = jieba.cut(data, cut_all=True)
     words = ' '.join(sentence)
     X_test.append(words)
 
     test_vec = get_test_vec(X_test, X_)
     return test_vec
 
-test_vec = deal_data(data)
-test_y = clf.predict([test_vec])
-labels = ['公司简介','网址','工作时间','地址','感受','前景','面试','福利','要求']
-test_y = list(test_y[0])
-
-print labels[test_y.index(1)]
+try:
+    test_vec = deal_data(data)
+    test_y = clf.predict([test_vec])
+except ValueError:
+    fr = open('label.json','w')
+    fr.write('400')
+    sys.exit(1)
+else:
+    try:
+        labels = ['公司简介','网址','工作时间','地址','感受','前景','面试','福利','要求']
+        test_y = list(test_y[0])
+        print test_y
+        print labels[test_y.index(1)]
+    except ValueError:
+        fr = open('label.json', 'w')
+        fr.write('401')
+    else:
+        fr = open('label.json','w')
+        fr.write('200 '+labels[test_y.index(1)])
