@@ -14,7 +14,7 @@ public class Interview implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(unique = true, nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String wxId;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -146,6 +146,12 @@ public class ApiController {
         if (follower.isPresent()) {
             Optional<Interview> interview = interviewService.getInterviewRepository().findByWxIdAndCompany(request.getWxId(), follower.get().getCompany());
             if (interview.isPresent()) {
+                if (interview.get().isFinished()) {
+                    response.setSuccess(false);
+                    response.setProblemId(-1);
+                    response.setProblem("已经做过测试啦，不能重复测试哦！");
+                    return response;
+                }
                 List<Problem> problems = problemService.getProblemRepository().findByCompany(follower.get().getCompany());
                 if (request.getProblemId() != -1) {  // not the first problem, store the result of previous problem
                     Optional<Problem> problem = problemService.getProblemRepository().findById(request.getProblemId());
@@ -169,11 +175,15 @@ public class ApiController {
                     response.setProblem("您已完成在线测试，请耐心等待后续通知，谢谢！");
                 } else {
                     int i = 0;
-                    while (i < problems.size()) {
-                        if (problems.get(i).getId() == request.getProblemId()) {
-                            break;
+                    if (request.getProblemId() != -1) {
+                        while (i < problems.size()) {
+                            if (problems.get(i).getId() == request.getProblemId()) {
+                                break;
+                            }
+                            i++;
                         }
-                        i++;
+                    } else {
+                        i = -1;
                     }
                     response.setSuccess(true);
                     response.setProblemId(problems.get(i+1).getId());
