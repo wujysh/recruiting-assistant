@@ -23,7 +23,7 @@ public class AdminMainController {
 
     @RequestMapping("/admin")
     public ModelAndView index() throws ServiceException {
-        ModelAndView mav = new ModelAndView("admin/dashboard");
+        ModelAndView mav = new ModelAndView("admin/company/list");
         User currentUser = userService.getSessionUser();
         mav.addObject("currentUser", currentUser);
         return mav;

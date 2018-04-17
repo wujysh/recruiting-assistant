@@ -29,6 +29,7 @@
                     <tr>
                         <th>#</th>
                         <th>Company</th>
+                        <th>WeChat ID</th>
                         <th>Name</th>
                         <th>Phone</th>
                         <th>Finished</th>
@@ -39,6 +40,7 @@
                     <tr th:each="interview : ${interviewList}">
                         <td th:text="${interview.id}"></td>
                         <td th:text="${interview.company}"></td>
+                        <td th:text="${interview.wxId}"></td>
                         <td th:text="${interview.name}"></td>
                         <td th:text="${interview.phone}"></td>
                         <td th:text="${interview.finished}"></td>

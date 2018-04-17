@@ -28,12 +28,14 @@
                     <thead>
                     <tr>
                         <th>#</th>
+                        <th>WeChat ID</th>
                         <th>Company</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="follower : ${followerList}">
                         <td th:text="${follower.id}"></td>
+                        <td th:text="${follower.wxId}"></td>
                         <td th:text="${follower.company}"></td>
                     </tr>
                     </tbody>
