@@ -31,6 +31,24 @@
                     Question <span th:if="${current == 'question'}" class="sr-only">(current)</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${current == 'problem'} ? active" th:href="@{/admin/problem}">
+                    <i data-feather="book-open"></i>
+                    Problem <span th:if="${current == 'problem'}" class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${current == 'interview'} ? active" th:href="@{/admin/interview}">
+                    <i data-feather="aperture"></i>
+                    Interview <span th:if="${current == 'interview'}" class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${current == 'follower'} ? active" th:href="@{/admin/follower}">
+                    <i data-feather="heart"></i>
+                    Follower <span th:if="${current == 'follower'}" class="sr-only">(current)</span>
+                </a>
+            </li>
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
