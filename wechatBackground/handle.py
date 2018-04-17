@@ -33,50 +33,50 @@ class Handle(object):
     def POST(self):
         try:
             webData = web.data()
-            #print(webData)
+            print(webData)
             recMsg = receive.parse_xml(webData)
-            #print(recMsg)
+            print(recMsg)
             #print(recMsg.MsgType)
             if isinstance(recMsg, receive.Msg):
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
-                #print(recMsg.MsgType)
+                print(recMsg)
                 if recMsg.MsgType == 'text':
-                    # try:
-                    #     a = JsonData.praserJsonFile()
-                    #     #print(a)
-                    # except Exception as Argument:
-                    #     return Argument
-                    # if a['status'] == '1':
-                    #     content = "No equipment"
-                    # else:
-                    #     if a['data'][0]['weather']=='0':
-                    #         israin = '7.没有下雨'
-                    #     else:
-                    #         israin = '7.下雨'
-                    #     #print(israin)
-                    #     content = "此设备数据如下:\n"+"1.id号为 "+a['data'][0]['id']+"\n"+"2.温度为 "+a['data'][0]['temp']+"\n"+"3.湿度为 "+a['data'][0]['humidity']+"\n"+"4.PM2.5浓度为 "+a['data'][0]['pm25']+"ug\n"+"5.PM10浓度为 "+a['data'][0]['pm10']+"\n"+"6.光照 "+a['data'][0]['illumination']+"L\n"+israin
-                    #     #content = "%s\n%s %s\n%s %s\n%s %s\n%s %s\n%s %s\n%s" %('环境数据如下：','设备id号为',a['data']['id'],'temp is', a['data']['temp'], 'humidity is', a['data']['humidity'],'PM25 is',a['data']['pm25'],'illumination',a['data']['illumination'],israin)
-                    #     #print(content)
-                    #debug 4/16 7:42 
                     str = recMsg.Content
-                    # print(str[0:7])
-                    # print(str)
-                    if str[0:7] == "公司+":
-                        company = totxt.toTxt(recMsg.Content)
+                    if str[0:1] == "1":
+                        company = totxt.toTxt("SAP",toUser)
                         content = "欢迎使用"+company+"公司AI招聘系统！"
                         replyMsg = reply.TextMsg(toUser, fromUser, content)
                         return replyMsg.send()
-                    rlt = getrlt.getRlt(recMsg)
+                    if str[0:1] == "2":
+                        company = totxt.toTxt("微软",toUser)
+                        content = "欢迎使用"+company+"公司AI招聘系统！"
+                        replyMsg = reply.TextMsg(toUser, fromUser, content)
+                        return replyMsg.send()
+                    if str[0:1] == "3":
+                        company = totxt.toTxt("腾讯",toUser)
+                        content = "欢迎使用"+company+"公司AI招聘系统！"
+                        replyMsg = reply.TextMsg(toUser, fromUser, content)
+                        return replyMsg.send()
+                    rlt = getrlt.getRlt(recMsg,toUser)
                     content = rlt['answer'].encode('utf-8')
+                    print(content,content.__class__)
+                    if content == "400":
+                        content = "我好像不明白你在说什么呢"
+                    if content == '401':
+                        content = "换一种问法我说不定答得上来哦"
                     replyMsg = reply.TextMsg(toUser, fromUser, content)
                     return replyMsg.send()
                 if recMsg.MsgType == 'voice':
                     #print('yes')
                     #print(recMsg.Recognition)
                     #content = "语音内容为："+recMsg.Recognition
-                    rlt = getrlt.getRlt(recMsg)
+                    rlt = getrlt.getRlt(recMsg,toUser)
                     content = rlt['answer'].encode('utf-8')
+                    if content == "400":
+                        content = "我好像不明白你在说什么呢"
+                    if content == "401":
+                        content = "换一种问法我说不定答得上来哦"
                     replyMsg = reply.TextMsg(toUser, fromUser, content)
                     return replyMsg.send()                    
                 if recMsg.MsgType == 'image':
@@ -92,9 +92,9 @@ class Handle(object):
                 if recMsg.MsgType == 'event':
                     #print('yes')
                     event = recMsg.Event
-                    #print(event)
+                    print(event)
                     if event == 'subscribe':
-                        content = "欢迎关注智能招聘助手！回复“公司+（您想面试的公司名称）”即可开始招聘问答"
+                        content = "欢迎关注智能招聘助手！回复数字即可选择公司开始招聘问答。（目前支持公司编号为：1、SAP；2、微软；3、腾讯）"
                         replyMsg = reply.TextMsg(toUser, fromUser, content)
                         return replyMsg.send()
                 else:

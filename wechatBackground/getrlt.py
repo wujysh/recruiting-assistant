@@ -2,9 +2,10 @@
 import httplib 
 import json  
 
-def getRlt(recMsg):
+def getRlt(recMsg,toUser):
 	try:
-		f = open('company.txt', 'r')
+		filename = toUser+".txt"
+		f = open(filename, 'r')
 		company = f.read()
 	finally:
 		if f:
