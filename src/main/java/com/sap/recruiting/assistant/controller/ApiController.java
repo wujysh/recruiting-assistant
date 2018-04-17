@@ -79,32 +79,35 @@ public class ApiController {
     @RequestMapping("/ask")
     @ResponseBody
     public AskQuestionResponse ask(@RequestBody AskQuestionRequest request) {
-        String companyName = "SAP";  // TODO
-        Optional<Company> company = companyService.getCompanyRepository().findByName(companyName);
-        Question question = new Question(request.getQuestion(), 0);
-        question.setCompany(company.orElse(null));
-
-        // get tag from model calculation
-        String tagString = questionService.getQuestionTagFromModel(question.getContent());
-        Optional<Tag> tag;
-        if (tagString.startsWith("40")) {
-            tag = Optional.empty();
-        } else {
-            tag = tagService.getTagRepository().findByName(tagString);
-        }
-        question.setTag(tag.orElse(null));
-
-        // record the question for future model improvement
-        questionService.getQuestionRepository().save(question);
-
-        // construct the response structure
         AskQuestionResponse response = new AskQuestionResponse();
-        if (tag.isPresent() && company.isPresent() && company.get().getProperties().containsKey(tag.get())) {
-            response.setAnswer(company.get().getProperties().get(tag.get()));
-            response.setSuccess(true);
+        Optional<Follower> follower = followerService.getFollowerRepository().findByWxId(request.getWxId());
+        if (follower.isPresent()) {
+            Question question = new Question(request.getQuestion(), 0);
+            question.setCompany(follower.get().getCompany());
+
+            // get tag from model calculation
+            String tagString = questionService.getQuestionTagFromModel(question.getContent());
+            Optional<Tag> tag;
+            if (tagString.startsWith("40")) {
+                tag = Optional.empty();
+            } else {
+                tag = tagService.getTagRepository().findByName(tagString);
+            }
+            question.setTag(tag.orElse(null));
+
+            // record the question for future model improvement
+            questionService.getQuestionRepository().save(question);
+
+            if (tag.isPresent() && follower.get().getCompany().getProperties().containsKey(tag.get())) {
+                response.setAnswer(follower.get().getCompany().getProperties().get(tag.get()));
+                response.setSuccess(true);
+            } else {
+                response.setAnswer(tagString + "未知");
+                response.setSuccess(false);
+            }
         } else {
-            response.setAnswer(tagString);
             response.setSuccess(false);
+            response.setAnswer("请先选择公司");
         }
         return response;
     }
