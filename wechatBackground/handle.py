@@ -5,6 +5,7 @@ import receive
 import JsonData
 import xml.dom.minidom
 import getrlt
+import totxt
 class Handle(object):
     def GET(self):
         try:
@@ -57,16 +58,25 @@ class Handle(object):
                     #     content = "此设备数据如下:\n"+"1.id号为 "+a['data'][0]['id']+"\n"+"2.温度为 "+a['data'][0]['temp']+"\n"+"3.湿度为 "+a['data'][0]['humidity']+"\n"+"4.PM2.5浓度为 "+a['data'][0]['pm25']+"ug\n"+"5.PM10浓度为 "+a['data'][0]['pm10']+"\n"+"6.光照 "+a['data'][0]['illumination']+"L\n"+israin
                     #     #content = "%s\n%s %s\n%s %s\n%s %s\n%s %s\n%s %s\n%s" %('环境数据如下：','设备id号为',a['data']['id'],'temp is', a['data']['temp'], 'humidity is', a['data']['humidity'],'PM25 is',a['data']['pm25'],'illumination',a['data']['illumination'],israin)
                     #     #print(content)
-                    #debug 4/16 7:42
-                    if recMsg.Content == '' 
-                    getrlt.getRlt(recMsg)
-                    content = "欢迎使用"+recMsg.Content+"公司AI招聘系统！"
+                    #debug 4/16 7:42 
+                    str = recMsg.Content
+                    # print(str[0:7])
+                    # print(str)
+                    if str[0:7] == "公司+":
+                        company = totxt.toTxt(recMsg.Content)
+                        content = "欢迎使用"+company+"公司AI招聘系统！"
+                        replyMsg = reply.TextMsg(toUser, fromUser, content)
+                        return replyMsg.send()
+                    rlt = getrlt.getRlt(recMsg)
+                    content = rlt['answer'].encode('utf-8')
                     replyMsg = reply.TextMsg(toUser, fromUser, content)
                     return replyMsg.send()
                 if recMsg.MsgType == 'voice':
                     #print('yes')
                     #print(recMsg.Recognition)
-                    content = "语音内容为："+recMsg.Recognition
+                    #content = "语音内容为："+recMsg.Recognition
+                    rlt = getrlt.getRlt(recMsg)
+                    content = rlt['answer'].encode('utf-8')
                     replyMsg = reply.TextMsg(toUser, fromUser, content)
                     return replyMsg.send()                    
                 if recMsg.MsgType == 'image':
