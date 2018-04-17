@@ -1,6 +1,11 @@
-def totxt(str):
+# -*- coding: utf-8 -*-
+def toTxt(str,toUser):
+    print(str)
     str = str.replace('公司+','')
-    fo = open("company.txt", "w")
+    print(str)
+    filename = toUser+".txt"
+    fo = open(filename, "w")
     fo.write(str)
+    print(fo)
     fo.close()
-    return value
+    return str
