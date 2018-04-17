@@ -1,7 +1,6 @@
 package com.sap.recruiting.assistant.controller;
 
-import com.sap.recruiting.assistant.controller.bean.AskRequest;
-import com.sap.recruiting.assistant.controller.bean.AskResponse;
+import com.sap.recruiting.assistant.controller.bean.*;
 import com.sap.recruiting.assistant.entity.Company;
 import com.sap.recruiting.assistant.entity.Question;
 import com.sap.recruiting.assistant.entity.Tag;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -36,10 +36,31 @@ public class ApiController {
         this.tagService = tagService;
     }
 
+    @RequestMapping("/companies")
+    @ResponseBody
+    public CompanyListResponse companyList() {
+        List<Company> companyList = companyService.getCompanyRepository().findAll();
+        CompanyListResponse response = new CompanyListResponse();
+        for (Company company : companyList) {
+            response.getCompanies().add(company.getName());
+        }
+        return response;
+    }
+
+    @RequestMapping("/select")
+    @ResponseBody
+    public SelectCompanyResponse selectCompany(@RequestBody SelectCompanyRequest request) {
+        // TODO
+        SelectCompanyResponse response = new SelectCompanyResponse();
+        response.setSuccess(true);
+        return response;
+    }
+
     @RequestMapping("/ask")
     @ResponseBody
-    public AskResponse ask(@RequestBody AskRequest request) {
-        Optional<Company> company = companyService.getCompanyRepository().findByName(request.getCompany());
+    public AskQuestionResponse ask(@RequestBody AskQuestionRequest request) {
+        String companyName = "SAP";  // TODO
+        Optional<Company> company = companyService.getCompanyRepository().findByName(companyName);
         Question question = new Question(request.getQuestion(), 0);
         question.setCompany(company.orElse(null));
 
@@ -57,7 +78,7 @@ public class ApiController {
         questionService.getQuestionRepository().save(question);
 
         // construct the response structure
-        AskResponse response = new AskResponse();
+        AskQuestionResponse response = new AskQuestionResponse();
         if (tag.isPresent() && company.isPresent() && company.get().getProperties().containsKey(tag.get())) {
             response.setAnswer(company.get().getProperties().get(tag.get()));
             response.setSuccess(true);
@@ -65,6 +86,26 @@ public class ApiController {
             response.setAnswer(tagString);
             response.setSuccess(false);
         }
+        return response;
+    }
+
+    @RequestMapping("/apply")
+    @ResponseBody
+    public ApplyInterviewResponse applyInterview(@RequestBody ApplyInterviewRequest request) {
+        // TODO
+        ApplyInterviewResponse response = new ApplyInterviewResponse();
+        response.setSuccess(true);
+        return response;
+    }
+
+    @RequestMapping("/interview")
+    @ResponseBody
+    public OnlineInterviewResponse onlineInterview(@RequestBody OnlineInterviewRequest request) {
+        // TODO
+        OnlineInterviewResponse response = new OnlineInterviewResponse();
+        response.setSuccess(true);
+        response.setProblemId(1);
+        response.setProblem("测试题目");
         return response;
     }
 }

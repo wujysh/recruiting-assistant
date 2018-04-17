@@ -3,18 +3,13 @@ package com.sap.recruiting.assistant.controller.bean;
 /**
  * Created by Jiaye Wu on 18-4-16.
  */
-public class AskResponse {
+public class AskQuestionResponse {
 
     private boolean success;
 
     private String answer;
 
-    public AskResponse() {
-    }
-
-    public AskResponse(boolean success, String answer) {
-        this.success = success;
-        this.answer = answer;
+    public AskQuestionResponse() {
     }
 
     public boolean isSuccess() {
