@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head lang="en" th:replace="admin/fragments/header :: header"></head>
+<script th:src="@{/js/jquery.min.js}"></script>
+<body>
+<nav lang="en" th:replace="admin/fragments/navbar :: navbar"></nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav lang="en" th:replace="admin/fragments/sidebar :: sidebar(current='problem')"></nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <div th:if="${failure}" class="alert alert-danger" role="alert" th:text="${failure}"></div>
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert" th:text="${success}"></div>
+
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                <h1 class="h2">Problem</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group mr-2">
+                        <a class="btn btn-sm btn-outline-secondary" th:classappend="${page <= 0} ? 'disabled'" th:href="@{/admin/problem(page=${page-1})}"><i data-feather="chevron-left"></i> Previous</a>
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/problem(page=${page+1})}">Next <i data-feather="chevron-right"></i></a>
+                    </div>
+                    <div class="btn-group mr-2">
+                        <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/problem/new}"><i data-feather="plus"></i> New</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Company</th>
+                        <th>Content</th>
+                        <th>Answer</th>
+                        <th>Operation</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="problem : ${problemList}">
+                        <td th:text="${problem.id}"></td>
+                        <td th:text="${problem.company.name}"></td>
+                        <td th:text="${problem.content}"></td>
+                        <td th:text="${problem.answer}"></td>
+                        <td>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/problem/{id}(id=${problem.id})}"><i data-feather="edit-3"></i> Update</a>
+                                    <a class="btn btn-sm btn-outline-danger" th:href="@{/admin/problem/{id}/delete(id=${problem.id})}" onClick="return confirm('Are you sure to delete this problem?')"><i data-feather="trash-2"></i> Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+<div lang="en" th:replace="admin/fragments/footer :: footer"></div>
+</body>
+</html>
