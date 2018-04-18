@@ -36,7 +36,7 @@ public class QuestionService {
         try {
             // execute the model in python
             ProcessBuilder pb = new ProcessBuilder("python", "model.py", question);
-            pb.directory(new File("model"));
+            pb.directory(new File("../model"));
             Process p = pb.start();
 
             // collect the output stream
