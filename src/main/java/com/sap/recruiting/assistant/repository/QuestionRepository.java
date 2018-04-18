@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Jiaye Wu on 18-4-9.
@@ -37,4 +38,6 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     List<Question> findByCompanyAndTagAndType(Company company, Tag tag, int type);
 
     Page<Question> findByCompanyAndTagAndTypeOrderByIdDesc(Company company, Tag tag, int type, Pageable pageable);
+
+    Optional<Question> findFirstByContentLikeAndType(String content, int type);
 }
