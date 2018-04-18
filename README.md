@@ -1,7 +1,7 @@
 # Smart Recruiting Assistant
 
-## Screen shots
-![Frontend](document/frontend.jpg)
+<img src="document/frontend.jpg" width="300" />
+
 ![Backend](document/backend.png)
 
 ## Steps to launch the project
