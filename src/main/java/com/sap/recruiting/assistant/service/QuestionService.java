@@ -45,7 +45,7 @@ public class QuestionService {
             if (code.equals("200")) {
                 return in.readLine().split(":")[1];
             } else {
-                Optional<Question> question1 = questionRepository.findFirstByContentLikeAndType(question, 1);
+                Optional<Question> question1 = questionRepository.findFirstByTypeAndContentIsLike(1, "%" + question.substring(0, question.length()-1) + "%");
                 if (question1.isPresent()) {
                     return question1.get().getTag().getName();
                 } else {

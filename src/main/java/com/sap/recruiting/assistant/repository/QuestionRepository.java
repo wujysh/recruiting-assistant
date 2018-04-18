@@ -39,5 +39,5 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 
     Page<Question> findByCompanyAndTagAndTypeOrderByIdDesc(Company company, Tag tag, int type, Pageable pageable);
 
-    Optional<Question> findFirstByContentLikeAndType(String content, int type);
+    Optional<Question> findFirstByTypeAndContentIsLike(int type, String content);
 }
