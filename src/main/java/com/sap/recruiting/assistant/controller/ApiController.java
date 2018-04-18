@@ -78,7 +78,7 @@ public class ApiController {
 
     @RequestMapping("/ask")
     @ResponseBody
-    public AskQuestionResponse ask(@RequestBody AskQuestionRequest request) {
+    public AskQuestionResponse askQuestion(@RequestBody AskQuestionRequest request) {
         AskQuestionResponse response = new AskQuestionResponse();
         Optional<Follower> follower = followerService.getFollowerRepository().findByWxId(request.getWxId());
         if (follower.isPresent()) {
@@ -95,14 +95,14 @@ public class ApiController {
             }
             question.setTag(tag.orElse(null));
 
-            // record the question for future model improvement
-            questionService.getQuestionRepository().save(question);
-
             if (tag.isPresent() && follower.get().getCompany().getProperties().containsKey(tag.get())) {
                 response.setAnswer(follower.get().getCompany().getProperties().get(tag.get()));
                 response.setSuccess(true);
             } else {
-                response.setAnswer(tagString + "未知");
+                // record the question for future model improvement
+                questionService.getQuestionRepository().save(question);
+
+                response.setAnswer(tagString);
                 response.setSuccess(false);
             }
         } else {
